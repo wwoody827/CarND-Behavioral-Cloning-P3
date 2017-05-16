@@ -26,13 +26,13 @@ def generator(samples, batch_size=32):
                 
                 name = './data/IMG/'+batch_sample[1].split('/')[-1]
                 center_image = cv2.imread(name)
-                center_angle = float(batch_sample[3]) + 0.1
+                center_angle = float(batch_sample[3]) + 0.5 
                 images.append(center_image)
                 angles.append(center_angle)
                 
                 name = './data/IMG/'+batch_sample[2].split('/')[-1]
                 center_image = cv2.imread(name)
-                center_angle = float(batch_sample[3]) - 0.1
+                center_angle = float(batch_sample[3]) - 0.5
                 images.append(center_image)
                 angles.append(center_angle)
 
