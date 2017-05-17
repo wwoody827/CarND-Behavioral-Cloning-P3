@@ -14,7 +14,6 @@ The goals / steps of this project are the following:
 * Test that the model successfully drives around track one without leaving the road
 * Summarize the results with a written report
 
-
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
@@ -53,25 +52,49 @@ The model.py file contains the code for training and saving the convolution neur
 
 ####1. An appropriate model architecture has been employed
 
-My model consists of a convolution neural network with 3x3 filter sizes and depths between 32 and 128 (model.py lines 18-24)
+The model I used is based on Nvidia Autopilot model. It consists of the following layers:
 
-The model includes RELU layers to introduce nonlinearity (code line 20), and the data is normalized in the model using a Keras lambda layer (code line 18).
+
+* Conv2D, 36x5x5, with subsample 2x2
+* Conv2D, 48x5x5, with subsample 2x2
+* Conv2D, 64x5x5, with subsample 1x1
+* Conv2D, 64x3x3, with subsample 1x1
+* Fully connected layer 400
+* Fully connected layer 100
+* Fully connected layer 50
+* Fully connected layer 10
+* Fully connected layer 1
+
+After each Conv2D, I added dropout layer with dropout prob 0.2 to reduce overfitting.
+
+Comparing with original Nvidia model, the main changes are:
+
+* Dropout layer been added
+* The number of fully connected layers been reduced.
+
+The
 
 ####2. Attempts to reduce overfitting in the model
 
-The model contains dropout layers in order to reduce overfitting (model.py lines 21).
+The model contains dropout layers in order to reduce overfitting.
 
-The model was trained and validated on different data sets to ensure that the model was not overfitting (code line 10-16). The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
+I found this to be important because comparing with large number of parameters, the amount of training set is still limited.
+
+
+The model was trained and validated on different data sets to ensure that the model was not overfitting.
+
+The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
 ####3. Model parameter tuning
 
-The model used an adam optimizer, so the learning rate was not tuned manually (model.py line 25).
+The model used an adam optimizer, so the learning rate was not tuned manually.
 
 ####4. Appropriate training data
 
-Training data was chosen to keep the vehicle driving on the road. I used a combination of center lane driving, recovering from the left and right sides of the road ...
+Training data was chosen to keep the vehicle driving on the road.
 
-For details about how I created the training data, see the next section.
+I used both three cameras for the training. In addition, I flipped all images horizontally to get twice the data.
+
 
 ###Model Architecture and Training Strategy
 
@@ -79,7 +102,12 @@ For details about how I created the training data, see the next section.
 
 The overall strategy for deriving a model architecture was to ...
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first step was to use a linear model. This is a simple model and I did not it expect it to work. But I choose this as a start point to see how a simple network fail.
+
+The result of a linear model is the car will simple make a U-turn with small radius. This can be understood as the training data is a car always running within a large
+
+
+to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting.
 
@@ -93,7 +121,21 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 ####2. Final Model Architecture
 
-The final model architecture (model.py lines 18-24) consisted of a convolution neural network with the following layers and layer sizes ...
+This is
+* Crop
+* Conv2D, 36x5x5, with subsample 2x2
+* Dropout(0.2)
+* Conv2D, 48x5x5, with subsample 2x2
+* Dropout(0.2)
+* Conv2D, 64x5x5, with subsample 1x1
+* Dropout(0.2)
+* Conv2D, 64x3x3, with subsample 1x1
+* Dropout(0.2)
+* Fully connected layer 400
+* Fully connected layer 100
+* Fully connected layer 50
+* Fully connected layer 10
+* Fully connected layer 1
 
 Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
