@@ -16,7 +16,8 @@ def generator(samples, batch_size=32):
             for batch_sample in batch_samples:
                 if len(batch_sample) < 4:
                     continue
-                name = './data/IMG/'+batch_sample[0].split('/')[-1]
+                filename = batch_sample[0].replace('\\', '/')
+                name = './data/IMG/'+filename.split('/')[-1]
                 center_image = cv2.imread(name)
                 center_angle = float(batch_sample[3])
                 images.append(center_image)
@@ -26,14 +27,16 @@ def generator(samples, batch_size=32):
                 images.append(fliped_image)
                 angles.append(-center_angle)
                 
-                if abs(center_angle) < 1:
-                    name = './data/IMG/'+batch_sample[1].split('/')[-1]
+                if abs(center_angle) < 10:
+                    filename = batch_sample[1].replace('\\', '/')
+                    name = './data/IMG/'+filename.split('/')[-1]
                     center_image = cv2.imread(name)
                     center_angle = float(batch_sample[3]) + 0.25 
                     images.append(center_image)
                     angles.append(center_angle)
                 
-                    name = './data/IMG/'+batch_sample[2].split('/')[-1]
+                    filename = batch_sample[2].replace('\\', '/')
+                    name = './data/IMG/'+filename.split('/')[-1]
                     center_image = cv2.imread(name)
                     center_angle = float(batch_sample[3]) - 0.25
                     images.append(center_image)
