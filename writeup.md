@@ -17,12 +17,10 @@ The goals / steps of this project are the following:
 [//]: # (Image References)
 
 [image1]: ./examples/placeholder.png "Model Visualization"
-[image2]: ./examples/placeholder.png "Grayscaling"
-[image3]: ./examples/placeholder_small.png "Recovery Image"
-[image4]: ./examples/placeholder_small.png "Recovery Image"
-[image5]: ./examples/placeholder_small.png "Recovery Image"
-[image6]: ./examples/placeholder_small.png "Normal Image"
-[image7]: ./examples/placeholder_small.png "Flipped Image"
+[training1]: ./writeupimg/center_2017_05_16_18_44_09_891.jpg "t1"
+[training2]: ./writeupimg/center_2017_05_17_15_15_44_529.jpg "t2"
+
+
 
 ## Rubric Points
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
@@ -121,7 +119,8 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 ####2. Final Model Architecture
 
-This is
+This is the final model architecture I used for this project.
+
 * Crop
 * Conv2D, 36x5x5, with subsample 2x2
 * Dropout(0.2)
@@ -143,28 +142,38 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 ####3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I used both track one and track two for centered
+lane driving.
 
-![alt text][image2]
+Here is a example of an image captured on track one. This image is taken when I drive the car counter-clockwise.
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+![alt text][training1]
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+Here is a example of an image captured on track two.
+
+![alt text][training2]
+
+
+In addition, I trained the simulator to capture how to drive back to center by recording off-centered driving.
 
 Then I repeated this process on track two in order to get more data points.
 
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
+To augment the data sat, I also flipped images and angles. This is proven to be working.
 
-![alt text][image6]
-![alt text][image7]
+In order to get more off-center-driving data, I used additional cameras from left and right to get more off-centered data.
 
-Etc ....
+After the collection process, I had roughly 9000 number of data points. Then I normalized all input images.
 
-After the collection process, I had X number of data points. I then preprocessed this data by ...
+I finally randomly shuffled the data set and put 20% of the data into a validation set.
 
+I cannot load all data into the memory of my PC, so I defined a generator that load a batch of images and process them (flipping, etc)
 
-I finally randomly shuffled the data set and put Y% of the data into a validation set.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I chose the number of epoch to be 5 because after 5 validation loss start to increase, which indicates overfitting.
+
+### results
+
+I tested my car on both tracks, as shown in \run1 and \run2.
+
+On track one, cars can stay for a long long long time without 
