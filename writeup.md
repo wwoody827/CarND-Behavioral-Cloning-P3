@@ -26,9 +26,9 @@ The goals / steps of this project are the following:
 ###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
-###Files Submitted & Code Quality
+### Files Submitted & Code Quality
 
-####1. Submission includes all required files and can be used to run the simulator in autonomous mode
+#### 1. Submission includes all required files and can be used to run the simulator in autonomous mode
 
 My project includes the following files:
 * model.py containing the script to create and train the model
@@ -36,19 +36,19 @@ My project includes the following files:
 * model.h5 containing a trained convolution neural network
 * writeup_report.md or writeup_report.pdf summarizing the results
 
-####2. Submission includes functional code
+#### 2. Submission includes functional code
 Using the Udacity provided simulator and my drive.py file, the car can be driven autonomously around the track by executing
 ```sh
 python drive.py model.h5
 ```
 
-####3. Submission code is usable and readable
+#### 3. Submission code is usable and readable
 
 The model.py file contains the code for training and saving the convolution neural network. The file shows the pipeline I used for training and validating the model, and it contains comments to explain how the code works.
 
-###Model Architecture and Training Strategy
+### Model Architecture and Training Strategy
 
-####1. An appropriate model architecture has been employed
+#### 1. An appropriate model architecture has been employed
 
 The model I used is based on Nvidia Autopilot model. It consists of the following layers:
 
@@ -68,22 +68,21 @@ After each Conv2D, I added dropout layer with dropout prob 0.2 to reduce overfit
 Comparing with original Nvidia model, the main changes are:
 
 * Dropout layer been added
-* The number of fully connected layers been reduced.
+* The number of fully connected layers been reduced to reduce model size.
 
 The
 
-####2. Attempts to reduce overfitting in the model
+#### 2. Attempts to reduce overfitting in the model
 
 The model contains dropout layers in order to reduce overfitting.
 
 I found this to be important because comparing with large number of parameters, the amount of training set is still limited.
 
-
 The model was trained and validated on different data sets to ensure that the model was not overfitting.
 
 The model was tested by running it through the simulator and ensuring that the vehicle could stay on the track.
 
-####3. Model parameter tuning
+#### 3. Model parameter tuning
 
 The model used an adam optimizer, so the learning rate was not tuned manually.
 
@@ -93,31 +92,27 @@ Training data was chosen to keep the vehicle driving on the road.
 
 I used both three cameras for the training. In addition, I flipped all images horizontally to get twice the data.
 
+I collect training data from both tracks and both directions (clockwise and counter-clockwise).
 
-###Model Architecture and Training Strategy
 
-####1. Solution Design Approach
+### Model Architecture and Training Strategy
 
-The overall strategy for deriving a model architecture was to ...
+#### 1. Solution Design Approach
+
 
 My first step was to use a linear model. This is a simple model and I did not it expect it to work. But I choose this as a start point to see how a simple network fail.
 
-The result of a linear model is the car will simple make a U-turn with small radius. This can be understood as the training data is a car always running within a large
+The result of a linear model is the car will simple make a U-turn with small radius. This can be understood as the training data is a car always running within a large circle and keeps turning left. So my car, after averaging all images, just keeps turning left.
 
+Then I used a covn neural network similar to Nvidia model, which is working according to my classmates.
 
-to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+The final step was to run the simulator to see how well the car was driving around track one and two. The first run worked quite well, my car keep in the track for a long time.
 
-In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting.
-
-To combat the overfitting, I modified the model so that ...
-
-Then I ...
-
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
+Then I collected more data on track one and track two. And I did a few changes to my model (add dropout and reduce fully connected layer, etc).
 
 At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
 
-####2. Final Model Architecture
+#### 2. Final Model Architecture
 
 This is the final model architecture I used for this project.
 
@@ -140,7 +135,7 @@ Here is a visualization of the architecture (note: visualizing the architecture 
 
 ![alt text][image1]
 
-####3. Creation of the Training Set & Training Process
+#### 3. Creation of the Training Set & Training Process
 
 To capture good driving behavior, I used both track one and track two for centered
 lane driving.
@@ -172,8 +167,10 @@ I used this training data for training the model. The validation set helped dete
 
 I chose the number of epoch to be 5 because after 5 validation loss start to increase, which indicates overfitting.
 
-### results
+#### 4. results
 
-I tested my car on both tracks, as shown in \run1 and \run2.
+I tested my car on both tracks, as shown in \run1,  \run2 and \run3
 
-On track one, cars can stay for a long long long time without 
+On track one, car can stay for a long long long time without leaving track, which can be seen in video file  in folder \run1 and \run3.
+
+On track two, currently car can only stay for a short time (a few minutes), and then out of road. This is because data collected on track two is quite limited comparing with track one.
