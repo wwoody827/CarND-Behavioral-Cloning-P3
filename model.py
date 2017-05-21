@@ -27,20 +27,19 @@ def generator(samples, batch_size=32):
                 images.append(fliped_image)
                 angles.append(-center_angle)
                 
-                if abs(center_angle) < 4:
-                    filename = batch_sample[1].replace('\\', '/')
-                    name = './data/IMG/'+filename.split('/')[-1]
-                    center_image = cv2.imread(name)
-                    center_angle = float(batch_sample[3]) + 0.5 
-                    images.append(center_image)
-                    angles.append(center_angle)
-                
-                    filename = batch_sample[2].replace('\\', '/')
-                    name = './data/IMG/'+filename.split('/')[-1]
-                    center_image = cv2.imread(name)
-                    center_angle = float(batch_sample[3]) - 0.5
-                    images.append(center_image)
-                    angles.append(center_angle)
+                filename = batch_sample[1].replace('\\', '/')
+                name = './data/IMG/'+filename.split('/')[-1]
+                center_image = cv2.imread(name)
+                center_angle = float(batch_sample[3]) + 0.25 
+                images.append(center_image)
+                angles.append(center_angle)
+
+                filename = batch_sample[2].replace('\\', '/')
+                name = './data/IMG/'+filename.split('/')[-1]
+                center_image = cv2.imread(name)
+                center_angle = float(batch_sample[3]) - 0.25
+                images.append(center_image)
+                angles.append(center_angle)
 
             # trim image to only see section with road
             X_train = np.array(images)
