@@ -81,13 +81,14 @@ model.add(Cropping2D(cropping=((30,10), (0,0)), input_shape=(160,320,3)))
 
 model.add(Convolution2D(3,1,1,border_mode='valid', activation='relu', subsample=(1,1)))
 
+model.add(Convolution2D(16,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
 model.add(Convolution2D(32,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
-model.add(Convolution2D(32,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
-model.add(Dropout(0.5))
-model.add(Convolution2D(64,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Dropout(0.2))
 model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(2,2)))
-model.add(Dropout(0.5))
-model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(1,1)))
+model.add(Convolution2D(96,3,3,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Dropout(0.2))
+model.add(Convolution2D(128,3,3,border_mode='valid', activation='relu', subsample=(1,1)))
+model.add(Convolution2D(256,3,3,border_mode='valid', activation='relu', subsample=(2,2)))
 model.add(Dropout(0.2))
 
 model.add(Flatten())
@@ -98,7 +99,7 @@ model.add(Dense(1, activation='tanh'))
 
 model.compile(loss = 'mse', optimizer = 'adam')
 
-model.fit_generator(train_generator, samples_per_epoch = len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=10)
+model.fit_generator(train_generator, samples_per_epoch = len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=4)
 
 model.save('model.h5')
 
