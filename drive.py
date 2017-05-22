@@ -60,10 +60,7 @@ def telemetry(sid, data):
         # The current image from the center camera of the car
         imgString = data["image"]
         image = Image.open(BytesIO(base64.b64decode(imgString)))
-        image_rbg = []
-        for img in image:
-            image_rbg.append(img.convert('RGB'))
-            
+        image_rbg = image.convert('RGB')
         image_array = np.asarray(image_rbg)
         steering_angle = float(model.predict(image_array[None, :, :, :], batch_size=1))
 
