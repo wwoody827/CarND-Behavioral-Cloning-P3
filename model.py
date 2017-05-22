@@ -30,14 +30,14 @@ def generator(samples, batch_size=32):
                 filename = batch_sample[1].replace('\\', '/')
                 name = './data/IMG/'+filename.split('/')[-1]
                 center_image = cv2.imread(name)
-                center_angle = float(batch_sample[3]) + 0.2
+                center_angle = float(batch_sample[3]) + 0.25
                 images.append(center_image)
                 angles.append(center_angle)
 
                 filename = batch_sample[2].replace('\\', '/')
                 name = './data/IMG/'+filename.split('/')[-1]
                 center_image = cv2.imread(name)
-                center_angle = float(batch_sample[3]) - 0.2
+                center_angle = float(batch_sample[3]) - 0.25
                 images.append(center_image)
                 angles.append(center_angle)
 
@@ -80,7 +80,7 @@ model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(row, col, ch), output_shap
 model.add(Cropping2D(cropping=((50,20), (0,0)), input_shape=(160,320,3)))
 
 model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
-# model.add(Dropout(0.2))
+model.add(Dropout(0.2))
 model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
 model.add(Dropout(0.2))
 model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
@@ -91,10 +91,10 @@ model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample
 model.add(Dropout(0.1))
 
 model.add(Flatten())
-model.add(Dense(400, activation='relu', W_regularizer = regularizers.l2(0.01)))
-model.add(Dense(100, activation='relu'))
-model.add(Dense(50, activation='relu'))
-model.add(Dense(10, activation='relu'))
+model.add(Dense(400, activation='relu', W_regularizer = regularizers.l2(0.001)))
+model.add(Dense(100, activation='relu', W_regularizer = regularizers.l2(0.001)))
+model.add(Dense(50, activation='relu',  W_regularizer = regularizers.l2(0.001)))
+model.add(Dense(10, activation='relu',  W_regularizer = regularizers.l2(0.001)))
 model.add(Dense(1, activation='tanh'))
 model.compile(loss = 'mse', optimizer = 'adam')
 
