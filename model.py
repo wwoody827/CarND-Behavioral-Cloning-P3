@@ -91,14 +91,14 @@ model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample
 model.add(Dropout(0.2))
 
 model.add(Flatten())
-model.add(Dense(512, activation='relu', W_regularizer = regularizers.l2(0.001)))
-model.add(Dense(64, activation='relu', W_regularizer = regularizers.l2(0.001)))
-model.add(Dense(16, activation='relu',  W_regularizer = regularizers.l2(0.001)))
+model.add(Dense(512, activation='relu', W_regularizer = regularizers.l2(0.01)))
+model.add(Dense(64, activation='relu', W_regularizer = regularizers.l2(0.01)))
+model.add(Dense(16, activation='relu',  W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(1, activation='tanh'))
 
 model.compile(loss = 'mse', optimizer = 'adam')
 
-model.fit_generator(train_generator, samples_per_epoch = len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=4)
+model.fit_generator(train_generator, samples_per_epoch = len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=10)
 
 model.save('model.h5')
 
