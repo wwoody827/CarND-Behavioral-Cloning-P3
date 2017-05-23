@@ -39,6 +39,9 @@ def generator(samples, batch_size=32):
                 images.append(center_image)
                 angles.append(center_angle)
                 
+                fliped_image = np.fliplr(center_image)
+                images.append(fliped_image)
+                angles.append(-center_angle)
 
                 filename = batch_sample[2].replace('\\', '/')
                 name = './data/IMG/'+filename.split('/')[-1]
@@ -46,6 +49,10 @@ def generator(samples, batch_size=32):
                 center_angle = float(batch_sample[3]) - 0.25
                 images.append(center_image)
                 angles.append(center_angle)
+                
+                fliped_image = np.fliplr(center_image)
+                images.append(fliped_image)
+                angles.append(-center_angle)
    
             # trim image to only see section with road
             X_train = np.array(images)
@@ -88,12 +95,12 @@ model.add(Cropping2D(cropping=((30,10), (0,0)), input_shape=(160,320,3)))
 model.add(Convolution2D(3,1,1,border_mode='valid', activation='relu', subsample=(1,1), W_regularizer = regularizers.l2(0.01)))
 
 model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu', subsample=(2,2), W_regularizer = regularizers.l2(0.01)))
-model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu', subsample=(2,2), W_regularizer = regularizers.l2(0.01)))
 model.add(Dropout(0.2))
-model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
-model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu', subsample=(2,2), W_regularizer = regularizers.l2(0.01)))
+model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(2,2), W_regularizer = regularizers.l2(0.01)))
 model.add(Dropout(0.2))
-model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(64,3,3,border_mode='valid', activation='relu', subsample=(2,2), W_regularizer = regularizers.l2(0.01)))
 model.add(Dropout(0.2))
 
 model.add(Flatten())
@@ -101,11 +108,11 @@ model.add(Dense(1164, activation='relu', W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(100, activation='relu', W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(50, activation='relu',  W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(10, activation='relu',  W_regularizer = regularizers.l2(0.01)))
-model.add(Dense(1,  activation='tanh'))
+model.add(Dense(1))
 
 model.compile(loss = 'mse', optimizer = 'adam')
 
-model.fit_generator(train_generator, samples_per_epoch = 4 * len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=5)
+model.fit_generator(train_generator, samples_per_epoch = 4 * len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=10)
 
 model.save('model.h5')
 
