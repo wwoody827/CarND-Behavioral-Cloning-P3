@@ -22,7 +22,7 @@ def generator(samples, batch_size=32):
                 center_angle = float(batch_sample[3])
                 
                 if abs(center_angle) < 0.05:
-                    if random.random() > 0.1:
+                    if random.random() > 0.5:
                         continue
                 
                 images.append(center_image)
@@ -105,7 +105,7 @@ model.add(Dense(1, activation='tanh'))
 
 model.compile(loss = 'mse', optimizer = 'adam')
 
-model.fit_generator(train_generator, samples_per_epoch = len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=10)
+model.fit_generator(train_generator, samples_per_epoch = 4 * len(train_samples), validation_data=validation_generator, nb_val_samples=len(validation_samples), nb_epoch=5)
 
 model.save('model.h5')
 
