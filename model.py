@@ -60,7 +60,7 @@ def generator(samples, batch_size=32):
             yield sklearn.utils.shuffle(X_train, y_train)
             
 samples = []
-csv_filename = './data/original_driving_log.csv'
+csv_filename = './data/driving_log.csv'
 with open(csv_filename, 'r') as csv_file:
     reader = csv.reader(csv_file)
     for line in reader:
