@@ -101,7 +101,7 @@ model.add(Dense(1164, activation='relu', W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(100, activation='relu', W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(50, activation='relu',  W_regularizer = regularizers.l2(0.01)))
 model.add(Dense(10, activation='relu',  W_regularizer = regularizers.l2(0.01)))
-model.add(Dense(1,  activation='relu'))
+model.add(Dense(1,  activation='tanh'))
 
 model.compile(loss = 'mse', optimizer = 'adam')
 
