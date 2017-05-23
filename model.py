@@ -21,9 +21,9 @@ def generator(samples, batch_size=32):
                 center_image = cv2.imread(name)
                 center_angle = float(batch_sample[3])
                 
-                if abs(center_angle) < 0.05:
-                    if random.random() > 0.5:
-                        continue
+                # if abs(center_angle) < 0.05:
+                #    if random.random() > 0.5:
+                #        continue
                 
                 images.append(center_image)
                 angles.append(center_angle)
@@ -85,9 +85,9 @@ model = Sequential()
 model.add(Lambda(lambda x: x/127.5 - 1., input_shape=(row, col, ch), output_shape=(row, col, ch)))
 model.add(Cropping2D(cropping=((30,10), (0,0)), input_shape=(160,320,3)))
 
-model.add(Convolution2D(3,1,1,border_mode='valid', activation='relu', subsample=(1,1)))
+model.add(Convolution2D(3,1,1,border_mode='valid', activation='relu', subsample=(1,1), W_regularizer = regularizers.l2(0.01)))
 
-model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
+model.add(Convolution2D(24,5,5,border_mode='valid', activation='relu', subsample=(2,2), W_regularizer = regularizers.l2(0.01)))
 model.add(Convolution2D(36,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
 model.add(Dropout(0.2))
 model.add(Convolution2D(48,5,5,border_mode='valid', activation='relu', subsample=(2,2)))
