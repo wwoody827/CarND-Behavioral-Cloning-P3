@@ -1,8 +1,8 @@
-#**Behavioral Cloning**
+# **Behavioral Cloning**
 
-##Writeup Template
+## Writeup Template
 
-###You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
+### You can use this file as a template for your writeup if you want to submit it as a markdown file, but feel free to use some other method and submit a pdf if you prefer.
 ---
 
 **Behavioral Cloning Project**
@@ -23,7 +23,7 @@ The goals / steps of this project are the following:
 
 
 ## Rubric Points
-###Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
+### Here I will consider the [rubric points](https://review.udacity.com/#!/rubrics/432/view) individually and describe how I addressed each point in my implementation.  
 
 ---
 ### Files Submitted & Code Quality
@@ -86,7 +86,7 @@ The model was tested by running it through the simulator and ensuring that the v
 
 The model used an adam optimizer, so the learning rate was not tuned manually.
 
-####4. Appropriate training data
+#### 4. Appropriate training data
 
 Training data was chosen to keep the vehicle driving on the road.
 
@@ -114,7 +114,7 @@ At the end of the process, the vehicle is able to drive autonomously around the 
 
 #### 2. Final Model Architecture
 
-This is the final model architecture I used for this project.
+This is the fist submitted model architecture I used for this project.
 
 * Crop
 * Conv2D, 36x5x5, with subsample 2x2
@@ -131,9 +131,35 @@ This is the final model architecture I used for this project.
 * Fully connected layer 10
 * Fully connected layer 1
 
-Here is a visualization of the architecture (note: visualizing the architecture is optional according to the project rubric)
 
-![alt text][image1]
+To achieve a better results, I modified my model based on discussion with other on forum. The final model architecture is the following:
+(see model.py line 91 to 111)
+
+* Crop
+* Conv2D, 3x1x1, with subsample 1x1
+* Conv2D, 24x5x5, with subsample 2x2
+* Conv2D, 36x5x5, with subsample 2x2
+* Dropout(0.2)
+* Conv2D, 48x5x5, with subsample 2x2
+* Dropout(0.2)
+* Conv2D, 64x3x3, with subsample 2x2
+* Conv2D, 64x3x3, with subsample 2x2
+* Dropout(0.2)
+* Fully connected layer 1164
+* Fully connected layer 100
+* Fully connected layer 50
+* Fully connected layer 10
+* Fully connected layer 1
+
+
+At first, I add tanh as the activation function in the final fc layer. The reason is the final output, which is normalized steer angle, is ranged from -1 to 1. Thus, by using a tanh function at the end, I can limited the final output.
+
+However, after a few more trying, I found that when using a tanh activation function, the model will less likely to make a large turn, which in some conditions will cause the car driving outside the lane. Thus, in the finaly model I remove this activation.
+
+In addition to that, I also added l2 regularizers to all layers, to further reduce overfitting. Considering I am now using the data collected from track 1, this is even more important.
+
+I tested different values for dropout, including 0.1, 0.2 and 0.5. Then I chose the best performance one, 0.2.
+
 
 #### 3. Creation of the Training Set & Training Process
 
@@ -166,6 +192,16 @@ I cannot load all data into the memory of my PC, so I defined a generator that l
 I used this training data for training the model. The validation set helped determine if the model was over or under fitting. I used an adam optimizer so that manually training the learning rate wasn't necessary.
 
 I chose the number of epoch to be 5 because after 5 validation loss start to increase, which indicates overfitting.
+
+**Note: There are some modifications to my training and testing after first submitting.**
+
+
+1. I remove data collected on track 2 to get a better performance.
+
+2. I found training data collected with different simulator graphic setting will strongly effect the training results. So, I removed all my previous training data, which were collected with "fastest" setting, and replaced them with newly collected data on track 1 with better graphic setting in the simulator.
+
+3. I modified the drive.py to accept openCV formatted images, to match the training process.
+
 
 #### 4. results
 
